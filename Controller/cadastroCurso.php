@@ -7,22 +7,28 @@
   ){
 
     $descricao=$_POST["descricao"];
-    $cargaHoraria=$_POST["cargaHoraria"];
-    $codUsuarioCoordenador=$_POST["codUsuarioCoordenador"];
+    $carga_horaria=$_POST["carga_horaria"];
+    $cod_usuario_coordenador=$_POST["cod_usuario_coordenador"];
       
  	include("../Model/classeCurso.php");
 	$cadastro = new Curso();
-	$cadastro->cadastrar($descricao, $cargaHoraria, $codUsuarioCoordenador);
+	$cadastro->cadastrar($descricao, $carga_horaria, $cod_usuario_coordenador);
+  $retornoCurso = $cadastro->cadastrar($descricao, $carga_horaria, $cod_usuario_coordenador);
 	  
-	if($cadastro){
-	  header('location: ../Views/formsCadastroCurso.php?mensagem=sucesso');
-	}else{
-	  header('location: ../Views/formsCadastroCurso.php?mensagem=erro');
-	}/*else{
-      header('location: ../Views/formsCadastroCurso.php?mensagem=CoordenadorNaoConfere');
+  if($retornoCurso){
+    //echo $retornoCurso;
+    session_start();
+    $_SESSION["cod_curso"] = $retornoCurso;
+
+    header('location: ../index.php?pagina=formsCadastroCurso.php');
+    }else{
+    header('location: ../index.php?pagina=formsCadastroCurso.php');
     }
-  else{
-    echo "Erro";
-  }*/
-}
+  
+    
+    }else{
+    echo "Erro!!!!";
+    var_dump($_POST);
+    exit;
+  }
 ?>
