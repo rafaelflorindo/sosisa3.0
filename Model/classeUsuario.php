@@ -93,7 +93,7 @@ class Usuario{
       return $tipo;   //RETORNA O ARRAY
     }
 
-        public function listaUsuarioProfessor(){
+     public function listaUsuarioProfessor(){
       $sql = "select codigo, nome from usuario WHERE cod_tipo_usuario = 3 AND status = true";
       include("conexao.php");
       $retorno=$conectar->query($sql);

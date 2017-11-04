@@ -64,15 +64,20 @@ class Disciplina{
 
 
     public function listaDisciplina(){
+        /*if ($codDisciplina){
+            $where = "where codigo = $codDisciplina ORDER BY descricao ASC";
+        } else{
+            $where = "ORDER BY descricao ASC";
+        }*/
         $sql = "select * from disciplina ORDER BY descricao ASC";
-      include("conexao.php");
+        include("conexao.php");
         
         $retorno = $conectar->query($sql);//roda a consulta sql no banco
         $row_cnt = $retorno->num_rows;//numero de registro retornado da consulta sql
         
         if($row_cnt > 0){//se o numero de linha for maior que 0 ele retorna o vetor com os dados do usuário
           //$tipoCurso = $retorno->fetch_array();//colocar os dados do usuário selecionado em um vetor
-          $tipoSerie = array();    //CRIA ARRAY VAZIO
+          $tipoDisciplina = array();    //CRIA ARRAY VAZIO
       while ($linha = $retorno->fetch_array()) {//colocar os dados do usuário selecionado em um veto
           $tipoDisciplina[] = $linha;   //ALIMENTA O ARRAY DINAMICAMENTE
       }

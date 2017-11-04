@@ -5,7 +5,7 @@
 
     mysqli_report(MYSQLI_REPORT_STRICT);
         try {
-            $conectar = new mysqli("localhost", "root", "", "u649696891_isa2");
+            $conectar = new mysqli("localhost", "root", "", "sos2");
             //echo 'Conectado com sucesso';
             return $conectar;//retorna a conexao
         } catch (Exception $e) {

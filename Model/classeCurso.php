@@ -26,8 +26,9 @@ class Curso{
       $sql="insert into curso (descricao, carga_horaria, cod_usuario_coordenador) values 
       ('$this->descricao', '$this->cargaHoraria', '$this->codUsuarioCoordenador')";
 
-      echo $sql;
+      //echo $sql;
       $query=$conectar->query($sql);
+      
         if ($query){
       	return 1;
         }else{

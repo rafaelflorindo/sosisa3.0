@@ -38,7 +38,7 @@ class Login{
         $retornoPermissao = $conectar->query($sql);
         $tipoPermissao = array();    //CRIA ARRAY VAZIO
         while ($linha = $retornoPermissao ->fetch_array()) {
-            $tipoPermissao[] = $linha;   //ALIMENTA O ARRAY DINAMICAMENTE
+            $tipoPermissao[] = $linha[cod_tipo_usuario];   //ALIMENTA O ARRAY DINAMICAMENTE
         }
         return $tipoPermissao;   //RETORNA O ARRAY
     }

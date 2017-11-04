@@ -52,23 +52,40 @@ class Turma{
       $this->cod_periodo = $cod_periodo;
       $this->cod_serie = $cod_serie;
      
-      $sql="alter table turma descricao='$this->descricao', cod_curso='$this->cod_curso', ano ='$this->ano',cod_periodo ='$this->cod_periodo',cod_serie ='$this->cod_serie' where cod_turma ='$this->cod_turma'";
-     
-     
+      $sql="update turma set descricao='$this->descricao', cod_curso='$this->cod_curso', ano ='$this->ano',cod_periodo ='$this->cod_periodo',cod_serie ='$this->cod_serie' where codigo ='$this->cod_turma'";
+
       $query=$conectar->query($sql);
+
       if ($query){
       	return 1;
       }else{
-	return 0;
+	    return 0;
       }
     }
+    public function listaTurmaUm($cod_turma){
+        $this->cod_turma = $cod_turma;
+        include("conexao.php");
+        $sql = "select * from turma where codigo ='$this->cod_turma'";
+        $query=$conectar->query($sql);
 
+        $listaTurma=array();
+        while ($dados = $query->fetch_array()){
+            $listaTurma[] = $dados;
+        }
+        return $listaTurma;
+    }
+    public function listaTurmas(){
 
+        include("conexao.php");
+        $sql = "select * from turma";
+        $query=$conectar->query($sql);
 
-
-
-
-
+        $listaTurma=array();
+        while ($dados = $query->fetch_array()){
+            $listaTurma[] = $dados;
+        }
+        return $listaTurma;
+    }
 
     public function listaTurmaDiscplina(){
     
