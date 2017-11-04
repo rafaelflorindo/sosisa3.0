@@ -260,71 +260,64 @@
  
         </nav>
 
-  <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-1">
-            </div>
-                <div class="col-lg-10">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Cadastro de Usuário
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <form action="./Controller/cadastroUsuario.php" role="form" method="post">
-                                        <div class="form-group">
-                                            <label>Login</label>
-                                             <input class="form-control" placeholder="Casdastre o login do usuário" name="login">
-                                        </div>
-                                </div>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-1">
+                </div>
+                    <div class="col-lg-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Cadastro de Usuário
                             </div>
-                            <div class="row">
-                                <div class="col-lg-5">
-
-                            
-                                        <div class="form-group">
-                                            <label>Nome</label>
-                                            <input class="form-control" placeholder="Casdastre o nome do usuário" name="nome">
-                                        </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                       <form action="./Controller/cadastroUsuario.php" role="form" method="post">
                                             <div class="form-group">
-                                                <label>Senha</label>
-                                                <input class="form-control" placeholder="Cadastre a senha do usuário" name="senha">
-                                                <input class="form-control" placeholder="Digite novamente a senha do usuário" name="senhaDuplicada" type="password" value="">
+                                                <label>Login</label>
+                                                 <input class="form-control" placeholder="Casdastre o login do usuário" name="login">
                                             </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">                           
+                                            <div class="form-group">
+                                                <label>Nome</label>
+                                                <input class="form-control" placeholder="Casdastre o nome do usuário" name="nome">
+                                            </div>
+                                                <div class="form-group">
+                                                    <label>Senha</label>
+                                                    <input class="form-control" placeholder="Cadastre a senha do usuário" name="senha">
+                                                    <input class="form-control" placeholder="Digite novamente a senha do usuário" name="senhaDuplicada" type="password" value="">
+                                                </div>
                                         
-                                        <div class="row">
-                                        <div class="col-lg-5">
-                                        <div class="form-group">
-                                            <label>Tipos de Usuários</label>
-                                             <select class="form-control" multiple name="tipoUsuario">; 
-
-                                                <?php
-                                                include("./model/classeTipoUsuario.php");
-                                                $objeto = new tipoUsuario();
-                                                $retornoTipo = $objeto->listaTipoUsuario();
-                                                foreach($retornoTipo as $valor){
-                                                ?>
-                                                    <option value="<?php echo $valor["codigo"] ?>">
-                                                                    <?php echo $valor["descricao"]?>
-                                                    </option>
-                                                    <?php
-                                                        } //foreach
-                                                    ?>
-                                                </select>
-                                        </div>
-                                        </div>
-                                        </div>
-                                    
-
-
-
-  <?php      /*$row_cnt = $retorno->num_rows;//numero de registro retornado da consulta sql
-        if($row_cnt > 0){//se o numero de linha for maio que 0 ele retorna o vetor com os dados do usuário
-        //return $tipoUsuario;
-        }else{
-          //return false;
-        }/*
+                                                <div class="row">
+                                                    <div class="col-lg-5">
+                                                        <div class="form-group">
+                                                            <label>Tipos de Usuários</label>
+                                                            <select class="form-control" multiple name="tipoUsuario">;
+                                                            <?php
+                                                            include("./model/classeTipoUsuario.php");
+                                                            $objeto = new tipoUsuario();
+                                                            $retornoTipo = $objeto->listaTipoUsuario();
+                                                            foreach($retornoTipo as $valor){
+                                                            ?>
+                                                                <option value="<?php echo $valor["codigo"] ?>">
+                                                                                <?php echo $valor["descricao"]?>
+                                                                </option>
+                                                                <?php
+                                                                    } //foreach
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php      /*$row_cnt = $retorno->num_rows;//numero de registro retornado da consulta sql
+                                                if($row_cnt > 0){//se o numero de linha for maio que 0 ele retorna o vetor com os dados do usuário
+                                                //return $tipoUsuario;
+                                                }else{
+                                                  //return false;
+                                                }/*
                                                 include("./Model/classeUsuario.php");
                                                 $buscaTipoUsuario = new Usuario();
                                                 $lista = $buscaTipoUsuario->listaTipoUsuario();
@@ -333,33 +326,37 @@
                                                     echo "$valor";
 
                                                 }*/
-                                            ?> 
+                                                ?> 
 
-                                <div class="row">
-                                <div class="col-lg-5">        
-                                        <div class="form-group">
-                                            <label>Status do Usuário</label>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="status" id="optionsRadios1" value="1" checked>Ativo
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="status" id="optionsRadios2" value="0">Inativo
-                                                </label>
-                                            </div>
-                                        </div></div>
-
-                                        <div class="row">
-                                        <div class="col-lg-10">        
-                                        <div class="form-group">
-                                        <button type="submit" class="btn btn-default">GRAVAR</button>
-                                        <button type="reset" class="btn btn-default">LIMPAR</button>
-                                        <!--<button type="reset" class="btn btn-default">ALTERAR</button>-->
+                                                <div class="row">
+                                                    <div class="col-lg-5">        
+                                                        <div class="form-group">
+                                                                <label>Status do Usuário</label>
+                                                            <div class="radio">
+                                                                <label>
+                                                                <input type="radio" name="status" id="optionsRadios1" value="1" checked>Ativo
+                                                                </label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <label>
+                                                                    <input type="radio" name="status" id="optionsRadios2" value="0">Inativo
+                                                                </label>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-10">        
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-default">GRAVAR</button>
+                                                                        <button type="reset" class="btn btn-default">LIMPAR</button>
+                                                            <!--<button type="reset" class="btn btn-default">ALTERAR</button>-->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>    
                                     </form>
                                     </div>
-                               
+                                </div>
                                 <!-- /.col-lg-6 (nested) -->
                                
                                 <!-- /.col-lg-6 (nested) -->

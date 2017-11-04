@@ -9,6 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+   
+
+
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
     <!-- Bootstrap Core CSS -->
@@ -47,6 +50,7 @@
                 </button>
                 <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
             </div>
+    </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
@@ -260,33 +264,88 @@
  
         </nav>
 
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-1">
+
+    <div id="page-wrapper">
+            <!--<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Formulário</h1>
                 </div>
+                <!-- /.col-lg-12 -->
+         <!--   </div>-->
+            <!-- /.row -->
+
+            <?php
+                if (isset($_GET["codigo"])){
+                    echo "Alterar";
+                    include ("./Model/classeCurso.php");
+                    $listaCurso = new Curso("curso");
+                    $curso = $listaCurso->listaCurso();
+                    foreach($curso as $linha);
+                    echo $linha["descricao"];
+                }else{}
+            ?>
+          <div class="row">
+            <div class="col-lg-1">
+            </div>
                 <div class="col-lg-10">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Cadastro Tipo do Usuário
+                            Cadastro do Curso
                         </div>
-                        <div class="row">
-                                <div class="col-lg-5">
-                                    <form action=  "./Controller/cadastroTipoUsuario.php" method="post">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                     <form action="./Controller/cadastroCurso.php" role="form" method="post">
+                                    
                                         <div class="form-group">
-                                            <label>Tipo do Usuário</label>
-                                            <input class="form-control" placeholder="Casdastre o tipo usuário" name="descricao">
-                                        </div>                                 
+                                            <label>Curso</label>
+                                             <input name="descricao" class="form-control" placeholder="Casdastre o curso" value="<?php echo $linha["descricao"]; ?>">
+
+                            <div class="row">
+                                <div class="col-lg-5">
+                            
+                                        <div class="form-group">
+                                            <label>Carga Horária</label>
+                                            <input class="form-control" name="cargaHoraria" placeholder="Casdastre a carga horária do curso" value="<?php echo $linha["carga_horaria"]; ?>">
+                                        </div>
                                         <div class="row">
-                                            <div class="col-lg-10">        
+                                            <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <button type="submit" class="btn btn-default">GRAVAR</button>
-                                                    <button type="reset" class="btn btn-default">LIMPAR</button>
-                                                    <!--<button type="reset" class="btn btn-default">ALTERAR</button>-->
-                                    </form>
+                                                    <label>Relacione o Coordenador</label><br>
+                                        
+                                                     <select multiple name="codUsuarioCoordenador"> 
+                                                        <?php
+                                                        include("./model/classeUsuario.php");
+                                                        $objeto = new Usuario();
+                                                        $retornoCoordenador = $objeto->listaUsuarioCoordenador();
+                                                        foreach($retornoCoordenador as $valor){
+                                                        ?>
+                                                            <option value="<?php echo $valor["codigo"] ?>">
+                                                                            <?php echo $valor["nome"]?>
+                                                            </option>
+                                                            <?php
+                                                                } //foreach
+                                                            ?>
+                                                        </select>
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
+
+
+                                         <div class="row">
+                                        <div class="col-lg-10">        
+                                        <div class="form-group">
+                                        <button type="submit" class="btn btn-default">GRAVAR</button>
+                                        <button type="reset" class="btn btn-default">LIMPAR</button>
+                                        
+                                        
+                                        <!--<button type="reset" class="btn btn-default">ALTERAR</button>-->
+                                    </form>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                               
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
                             <!-- /.row (nested) -->
                         </div>
                         <!-- /.panel-body -->

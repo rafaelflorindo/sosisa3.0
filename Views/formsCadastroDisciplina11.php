@@ -260,38 +260,58 @@
  
         </nav>
 
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-1">
-                </div>
-                <div class="col-lg-10">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Cadastro Tipo do Usuário
-                        </div>
+        <div class="row">
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Cadastro de Disciplinas
+                    </div>
+                    <div class="panel-body">
                         <div class="row">
-                                <div class="col-lg-5">
-                                    <form action=  "./Controller/cadastroTipoUsuario.php" method="post">
-                                        <div class="form-group">
-                                            <label>Tipo do Usuário</label>
-                                            <input class="form-control" placeholder="Casdastre o tipo usuário" name="descricao">
-                                        </div>                                 
-                                        <div class="row">
-                                            <div class="col-lg-10">        
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-default">GRAVAR</button>
-                                                    <button type="reset" class="btn btn-default">LIMPAR</button>
-                                                    <!--<button type="reset" class="btn btn-default">ALTERAR</button>-->
-                                    </form>
+                            <div class="col-lg-5">
+                                <form action=  "./Controller/cadastroDisciplina.php" method="post">
+                                    <div class="form-group">
+                                        <label>Disciplina</label>
+                                        <input name="descricao" class="form-control" placeholder="Casdastre a Disciplina">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-10">        
+                                            <div class="form-group">
+                                                <label>Carga Horária</label>
+                                                <input name="cargaHoraria" class="form-control" placeholder="Casdastre a carga horária do curso">
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-10">        
+                                                    <div class="form-group">
+                                                        <label>Status da Disciplina</label>
+                                                        <div class="radio">
+                                                            <label>
+                                                            <input type="radio" name="status" id="optionsRadios1" value="1" checked>Ativo
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="status" id="optionsRadios2" value="0">Inativo
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
+                                    </div>
+                                                <button type="submit" class="btn btn-default">GRAVAR</button>
+                                                <button type="submit" class="btn btn-default">GRAVAR</button>
+                                                <button type="reset" class="btn btn-default">LIMPAR</button>
+                                </form>
+                            </div>
+                         </div>
                             <!-- /.row (nested) -->
-                        </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
+                        <!-- /.panel-body -->
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

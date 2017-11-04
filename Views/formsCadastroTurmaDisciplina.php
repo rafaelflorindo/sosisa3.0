@@ -1,7 +1,11 @@
 <?php
    // session_start();
-
-    if(isset($_SESSION["cod_turma"])){
+if(isset($_GET["cod_turma_alterar"])){
+    $_SESSION["cod_turma"] =  $_GET["cod_turma_alterar"];
+}
+    if(isset($_SESSION["cod_turma"]) || (isset($_POST["cod_turma_disciplina"]) && isset($_POST["cod_turma"]) &&
+                        isset($_POST["cod_disciplina"]) &&
+                        isset($_POST["cod_usuario_professor"]))){
         $cod_turma = $_SESSION["cod_turma"];
     ?>
                                                 
@@ -12,45 +16,71 @@
         <div class="col-lg-10">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Cadastro da Turma Disciplina
+
+
+                    <?php
+                       if(
+                        isset($_GET["cod_turma"]) && 
+                        isset($_GET["cod_disciplina"]) &&
+                        isset($_GET["cod_usuario_professor"])
+                        ){
+                        echo "<H4>Alteração da Turma Disciplina</H4>";
+                        $cod_turma = $_GET["cod_turma"];
+                        $cod_turma_disciplina = $_GET["cod_turma_disciplina"];
+                        $cod_disciplina = $_GET["cod_disciplina"];
+                        $cod_usuario_professor = $_GET["cod_usuario_professor"];
+                    }else{
+                           echo "<H4>Cadastro da Turma Disciplina</H4>";
+                           //$cod_turma = NULL;
+                           $cod_turma_disciplina = NULL;
+                           $cod_disciplina = NULL;
+                           $cod_usuario_professor = NULL;
+                    }
+                    //exit;
+
+                    ?>
                     <form action="./Controller/cadastroTurmaDisciplina.php" method="POST">  
                         <div class="row"> 
                             <div class="col-lg-5"> 
                                 <div class="form-group">
                                     <label>Escolha uma disciplina</label><br>
-                                    <select class="form-control" name="cod_disciplina"> 
-                                                            <?php
-                                                            include("./Model/classeDisciplina.php");
-                                                            $objeto = new Disciplina();//classe
-                                                            $retornoDisciplina = $objeto->listaDisciplina();
+                                    <select class="form-control" name="cod_disciplina">
+                                        <option></option>
+                                         <?php
+                                         include("./Model/classeDisciplina.php");
+                                         $objeto = new Disciplina();//classe
+                                         $retornoDisciplina = $objeto->listaDisciplina();
+                                          //$retornoDisciplina = $objeto->listaDisciplina($cod_disciplina);
     //tras o vetor tipoDisciplina com os dados daa disciplina retornados pela query e armazena na variavel(vetor) retornoCurso
-                                                            foreach($retornoDisciplina as $valor){
+                                         foreach($retornoDisciplina as $valor){
     //exibe na tela a cópia do retornoDisciplina em $valor
-                                                            ?>
-                                                                <option value="<?php echo $valor["codigo"] ?>">
-                                                                                <?php echo $valor["descricao"]?>
-                                                                </option>
-                                                                <?php
-                                                                    } //foreach
-                                                                ?>
+                                         ?>
+                                          <option  value="<?php echo $valor["codigo"] ?>"<?php if ($valor["codigo"] == $cod_disciplina) echo "selected"; ?>>
+                                                                                <?php echo $valor["codigo"] . '    ' . $valor["descricao"]?>
+                                           </option>
+                                            <?php
+                                               } //foreach
+                                            ?>
                                         </select>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-5">
                                 <div class="form-group">
                                     <label>Relacione o Professor</label><br>
-                                    <select class="form-control" name="cod_tipo_usuario"> 
-                                                            <?php
-                                                            include("./Model/classeUsuario.php");
-                                                            $objeto = new Usuario();
-                                                            $retornoProfessor = $objeto->listaUsuarioProfessor();
-                                                            foreach($retornoProfessor as $valor){
-                                                            ?>
-                                                                <option value="<?php echo $valor["codigo"] ?>">
-                                                                                <?php echo $valor["nome"]?>
+                                    <select class="form-control" name="cod_tipo_usuario">
+                                        <option></option>
+                                        <?php
+                                          include("./Model/classeUsuario.php");
+                                          $objeto = new Usuario();
+                                          $retornoProfessor = $objeto->listaUsuarioProfessor();
+                                          foreach($retornoProfessor as $valor1){
+                                          ?>
+                                          <option value="<?php echo $valor1["codigo"] ?>"
+                                                                    <?php if ($valor1["codigo"]==$cod_usuario_professor) echo "selected"; ?>
+                                                                >
+                                                                                <?php echo $valor1["codigo"] . '    ' . $valor1["nome"]?>
                                                                 </option>
                                                                 <?php
                                                                     } //foreach
@@ -65,8 +95,21 @@
                                                         <?php
                                                     }
                                                 ?>
-                                                    <button type="submit" class="btn btn-default">GRAVAR</button>
-                                                    <button type="reset" class="btn btn-default">LIMPAR</button>
+                                <?php
+                                    if (isset($cod_turma) && !isset($cod_disciplina) && !isset($cod_usuario_professor)){
+                                ?>
+                                        <input type="hidden" name="acao" value="cadastrar">
+                                        <button type="submit" class="btn btn-default">GRAVAR</button>
+
+                                        <?php
+                                    }elseif (isset($cod_turma_disciplina)){
+                                ?>
+                                        <input type="hidden" name="acao" value="alterar">
+                                        <input type="hidden" name="cod_turma_disciplina" value="<?php echo $cod_turma_disciplina; ?>">
+                                        <button type="submit" class="btn btn-default">ALTERAR</button>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </form>
@@ -89,10 +132,35 @@
                         Registro das Disciplinas Cadastradas
                     </div>
                     <!-- /.panel-heading -->
+
+                    <?php
+                    if(isset($_GET["mensagem"])){
+                        $mensagem = $_GET["mensagem"];
+
+                        if ($mensagem == "sucesso"){
+                        ?>
+                        <div class="panel-body">
+                            <div class="alert alert-success">
+                                Operação realizada com Sucesso !!! <a href="#" class="alert-link">Alert Link</a>.
+                            </div>
+                        </div>
+                        <?php
+                        }if ($mensagem == "erro"){
+                            ?>
+                            <div class="panel-body">
+                                <div class="alert alert-danger">
+                                    Infelizmente a operação não foi realizada !!! <a href="#" class="alert-link">Alert Link</a>.
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
                     <div class="panel-body">
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>Codigo Turma</th>
                                 <th>Codigo Diciplina</th>
                                 <th>Codigo Professor</th>
@@ -110,20 +178,23 @@
 
                             //var_dump($lista);
 
+if ($lista != false) {  //devolvendo se a linha for false
                             foreach($lista as $linha){
                                 ?>
 
                                 <tr class="odd gradeX">
+                                    <td><?php echo $linha['cod_turma_disciplina'] ?></td>
                                     <td><?php echo $linha['cod_turma'] ?></td>
                                     <td><?php echo $linha['cod_disciplina'] ?></td>
                                     <td><?php echo $linha['cod_usuario_professor'] ?></td> 
-                                    <td><a href="formsCadastroCurso.php?codigo=<?php echo $linha['codigo'] ?>">
+                                    <td><a href="index.php?pagina=formsCadastroTurmaDisciplina.php&cod_turma_disciplina=<?php echo $linha['cod_turma_disciplina'] ?>&cod_turma=<?php echo $linha['cod_turma'] ?>&cod_disciplina=<?php echo $linha['cod_disciplina'] ?>&cod_usuario_professor=<?php echo $linha['cod_usuario_professor'] ?>">
                                             <button type="button" class="btn btn-outline btn-default" title="Alterar Registro">
                                                 Alterar
                                             </button>
+
                                     </td>
                                 </tr>
-                            <?php } ?>
+                            <?php } } ?>
                             </tbody>
                         </table>
                         <!-- Modal -->
@@ -159,15 +230,5 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <!-- /.row -->
-
-
-
-
-
-
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
+</div>
     <!-- /#wrapper -->
