@@ -1,25 +1,43 @@
 DELIMITER //
-CREATE TRIGGER insertLogCurso 
-  AFTER INSERT ON curso FOR EACH ROW
+CREATE TRIGGER insertPermissaoUsuario
+  BEFORE INSERT ON usuario FOR EACH ROW
 BEGIN
-  INSERT Tabela Log
+  INSERT Tabela usuario
   (new.cod_usuario_coordenador,
                    new.codigo,
 				   new.cod_usuario_alteracao);
 END //
 
 DELIMITER //
-CREATE TRIGGER updateLogCurso 
-  AFTER UPDATE ON curso FOR EACH ROW
+CREATE TRIGGER updatePermissaoUsuario 
+  BEFORE UPDATE ON usuario FOR EACH ROW
 BEGIN
-  INSERT Tabela Log
+  INSERT Tabela usuario
   (new.cod_usuario_coordenador,
                    new.codigo,
 				           new.cod_usuario_alteracao);
 END //
 
+
+
+
+
+  
+
+delimiter //
+CREATE TRIGGER nomedoTrigger after INSERT ON usuario_voto
+FOR EACH ROW
+BEGIN
+Aqui você coloca a estrutura do trigger.
+END //
+delimiter ;
+
+
+
+
+
 DELIMITER //
-CREATE PROCEDURE inserirTabelaLog 
+CREATE PROCEDURE inserirPermissaoUsuario
 (cod_usuario_coordenador int,
  codigo int, 
  cod_usuario_alteracao int)

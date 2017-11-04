@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 26-Out-2017 às 17:45
+-- Generation Time: 01-Nov-2017 às 01:27
 -- Versão do servidor: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -24,15 +24,11 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `inserirTabelaLog` (`cod_usuario_coordenador` INT, `codigo` INT, `cod_usuario_alteracao` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `inserirTabelaLog` (`pNome_tabela` VARCHAR(30), `pLog` VARCHAR(300), `pChave` VARCHAR(30), `pCod_usuario` INT)  BEGIN
   INSERT INTO log
   (nome_tabela, log, chave, data, cod_usuario)
   VALUES
-  ('curso', 
-   concat('inseriu Coord: ', cod_usuario_coordenador), 
-   concat('codigo=', codigo),
-   now(),
-   cod_usuario_alteracao);
+  (pNome_tabela, pLog, pChave, now(), pCod_usuario);
 END$$
 
 DELIMITER ;
@@ -63,16 +59,41 @@ CREATE TABLE `curso` (
   `descricao` varchar(30) DEFAULT NULL,
   `carga_horaria` int(11) DEFAULT NULL,
   `cod_usuario_coordenador` int(11) DEFAULT NULL,
-  `cod_usuario_alteacao` int(11) DEFAULT NULL
+  `cod_usuario_alteracao` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `curso`
 --
 
-INSERT INTO `curso` (`codigo`, `descricao`, `carga_horaria`, `cod_usuario_coordenador`, `cod_usuario_alteacao`) VALUES
+INSERT INTO `curso` (`codigo`, `descricao`, `carga_horaria`, `cod_usuario_coordenador`, `cod_usuario_alteracao`) VALUES
 (1, 'trico', 222, 2, NULL),
-(2, 'carrao', 111, 7, NULL);
+(2, 'carrao', 111, 7, NULL),
+(3, 'carrao', 111, 7, NULL),
+(4, 'ContAbilidade', 123, 5, NULL),
+(5, 'ContAbilidade2', 123, 2, 4);
+
+--
+-- Acionadores `curso`
+--
+DELIMITER $$
+CREATE TRIGGER `insertLogCurso` AFTER INSERT ON `curso` FOR EACH ROW BEGIN
+  CALL inserirTabelaLog('curso',
+                        concat('inseriu Coord: ', new.cod_usuario_coordenador),
+                        concat('codigo=', new.codigo),
+			   	        new.cod_usuario_alteracao);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `updateLogCurso` AFTER UPDATE ON `curso` FOR EACH ROW BEGIN
+  CALL inserirTabelaLog('curso',
+                        concat('alterou Coord: ', new.cod_usuario_coordenador),
+                        concat('codigo=', new.codigo),
+			   	        new.cod_usuario_alteracao);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -138,8 +159,8 @@ CREATE TABLE `log` (
 --
 
 INSERT INTO `log` (`codigo`, `chave`, `data`, `log`, `nome_tabela`, `cod_usuario`) VALUES
-(1, '1', '2017-10-24 23:40:01', '1', 'curso', NULL),
-(2, 'codigo=8', '2017-10-24 23:44:27', 'inseriu Coord: 1', 'curso', NULL);
+(1, 'codigo=5', '2017-10-28 00:13:11', 'inseriu Coord: 7', 'curso', 5),
+(2, 'codigo=5', '2017-10-28 00:19:22', 'alterou Coord: 2', 'curso', 4);
 
 -- --------------------------------------------------------
 
@@ -191,7 +212,8 @@ INSERT INTO `serie` (`codigo`, `descricao`) VALUES
 (3, 'B'),
 (4, 'C'),
 (6, 'D'),
-(7, 'e');
+(7, 'e'),
+(8, '');
 
 -- --------------------------------------------------------
 
@@ -279,7 +301,29 @@ INSERT INTO `turma` (`codigo`, `descricao`, `cod_curso`, `ano`, `cod_periodo`, `
 (14, 'oooo', 1, 2000, 1, 1),
 (15, 'aaa', 1, 2000, 1, 1),
 (16, '1cosrt', 1, 2000, 1, 1),
-(17, 'ssss', 2, 2001, 1, 1);
+(17, 'ssss', 2, 2001, 1, 1),
+(18, 'erererererewrwerwqerwer', 2, 0, 1, 1),
+(19, 'erererererewrwerwqerwer', 2, 0, 1, 1),
+(20, 'wwww', 2, 0, 1, 1),
+(21, 'wwww', 2, 0, 1, 1),
+(22, 'wwww', 2, 0, 1, 1),
+(23, 'wwww', 2, 0, 1, 1),
+(24, 'teste', 2, 0, 1, 1),
+(25, 'Branca da Mota', 2, 2020, 2, 6),
+(26, 'ALESSANDRO', 2, 2017, 1, 1),
+(27, 'ALESSANDRO1', 2, 2017, 1, 1),
+(28, 'ALESSANDRO12', 2, 2017, 1, 1),
+(29, 'ALESSANDRO123', 2, 2017, 1, 1),
+(30, 'ALESSANDRO123', 2, 2017, 1, 1),
+(31, 'ALESSANDRO123', 2, 2017, 1, 1),
+(32, 'abc', 2, 2050, 1, 7),
+(33, '8888', 1, 2014, 2, 6),
+(34, 'musica', 2, 2017, 2, 8),
+(35, 'ze', 1, 2000, 1, 3),
+(36, 'ze', 1, 2000, 1, 3),
+(37, 'ww', 4, 2113, 1, 7),
+(38, 'era', 1, 2333, 1, 7),
+(39, 'ti', 1, 2000, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -293,6 +337,33 @@ CREATE TABLE `turma_disciplina` (
   `cod_usuario_professor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `turma_disciplina`
+--
+
+INSERT INTO `turma_disciplina` (`cod_turma`, `cod_disciplina`, `cod_usuario_professor`) VALUES
+(23, 2, 6),
+(23, 5, 6),
+(23, 8, 3),
+(25, 2, 3),
+(25, 4, 3),
+(25, 4, 6),
+(25, 5, 3),
+(25, 5, 6),
+(25, 6, 3),
+(25, 6, 6),
+(25, 7, 3),
+(25, 8, 3),
+(25, 8, 6),
+(25, 9, 3),
+(34, 8, 3),
+(34, 9, 3),
+(35, 8, 3),
+(36, 8, 3),
+(37, 1, 3),
+(38, 8, 3),
+(39, 8, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -305,21 +376,22 @@ CREATE TABLE `usuario` (
   `login` varchar(30) DEFAULT NULL,
   `senha` varchar(200) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `cod_tipo_usuario` int(11) DEFAULT NULL
+  `cod_tipo_usuario` int(11) DEFAULT NULL,
+  `cod_usuario_alteracao` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `usuario`
 --
 
-INSERT INTO `usuario` (`codigo`, `nome`, `login`, `senha`, `status`, `cod_tipo_usuario`) VALUES
-(1, 'Administrador', 'adm', '123', 1, 1),
-(2, 'Marcio', 'Mar', '123', 1, 2),
-(3, 'Rafael', 'Raf', '123', 1, 3),
-(4, 'Ademir Billa', 'Ademir', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 4),
-(5, 'Zenilton Costa', 'Zenilton', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 4),
-(6, 'Rafael Florindo', 'Rafael', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 3),
-(7, 'Rafael Florindo', 'Rafael', '285367f5c5b40feb308cd66a24325ca5176207b8', 1, 2);
+INSERT INTO `usuario` (`codigo`, `nome`, `login`, `senha`, `status`, `cod_tipo_usuario`, `cod_usuario_alteracao`) VALUES
+(1, 'Administrador', 'adm', '123', 1, 1, NULL),
+(2, 'Marcio', 'Marcio', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 2, NULL),
+(3, 'Rafael', 'Raf', '123', 1, 3, NULL),
+(4, 'Ademir Billa', 'Ademir', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 4, NULL),
+(5, 'Zenilton Costa', 'Zenilton', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 4, NULL),
+(6, 'Rafael Florindo', 'Rafael', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 3, NULL),
+(7, 'Rafael Florindo', 'Rafael', '285367f5c5b40feb308cd66a24325ca5176207b8', 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -481,7 +553,7 @@ ALTER TABLE `periodo`
 -- AUTO_INCREMENT for table `serie`
 --
 ALTER TABLE `serie`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tipo_sistema`
 --
@@ -496,7 +568,7 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT for table `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
